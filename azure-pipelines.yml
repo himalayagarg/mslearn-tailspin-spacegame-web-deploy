@@ -89,14 +89,14 @@ stages:
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
               appType: webAppLinux
 
-- stage: 'Test'
-  displayName: 'Deploy to the test environment'
-  dependsOn: Dev
+- stage: 'Staging'
+  displayName: 'Deploy to the staging environment'
+  dependsOn: dev
   jobs:
   - deployment: Deploy
     pool:
       vmImage: 'ubuntu-20.04'
-    environment: test
+    environment: staging
     variables:
     - group: 'Release'
     strategy:
@@ -109,6 +109,6 @@ stages:
             displayName: 'Azure App Service Deploy: website'
             inputs:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
-              appName: '$(WebAppNameTest)'
+              appName: '$(WebAppNameStaging)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
               appType: webAppLinux
